@@ -25,3 +25,19 @@ To convert back:
     var recreatedObject = Storage.Deserialize<ObjectType>(stringRepresentation);
 
 There are also functions to write directly to files, with JSON or binary blobs. See UnitySerializer.cs for more information.
+
+Justification
+=============
+
+I wanted to persist a few classes between save games. These are not MonoBehaviours, so I assumed it would be quite simple to serialize them.
+
+There were several options available. I could use .Net's XmlSerializer to get something working, but it's a little slow, the results are bulky, and it can't persist classes with private fields without you extending the classes. 
+
+.Net also has a BinaryFormatter which can be used to quickly make small representations of classes, and it works with (annotated) private fields. However depending on your Unity project settings, this can cause JIT issues on iOS.
+
+The main UnitySerializer package (http://whydoidoit.com/unityserializer/) can do JIT-aware binary serialization on mobile, but is a heavyweight package designed to help you create a whole savegame system. So I took that package (very generously available under the MIT licence) and pulled out the core serialization code, leaving something that's lighter, works on mobile, and is easy to use in client code.
+
+Contributions
+=============
+
+Pull requests for further streamlining or bugfixes are welcome. For anything else, check first that I'll accept your modifications. 

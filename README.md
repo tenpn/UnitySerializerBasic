@@ -8,7 +8,7 @@ Use when you want to take an arbitary object, and convert it to JSON, a string o
 Installation
 ============
 
-Download latest package from https://github.com/tenpn/UnitySerializerBasic/releases
+Download latest package from https://github.com/tenpn/UnitySerializerBasic/releases  
 From Unity, Assets->Import Package->Custom Package...
 
 Usage

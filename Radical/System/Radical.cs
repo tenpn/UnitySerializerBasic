@@ -534,24 +534,7 @@ public static class Radical
 		gameObject.audio.loop = true;
 		gameObject.audio.Play();
 	}
-	
-	public static void FadeVolume(this GameObject component, float toLevel = 1, float time = 1f, float? fromLevel = null)
-	{
-		component.gameObject.StartExtendedCoroutine(VolumeFader(component.audio, toLevel, time, fromLevel));
-	}
-	
-	static IEnumerator VolumeFader(AudioSource source, float level, float time, float? fromLevel)
-	{
-		var currentVolume = fromLevel ?? source.volume;
-		var t = 0f;
-		while(t < 1)
-		{
-			t+= Time.deltaTime/time;
-			source.volume = Mathf.Lerp(currentVolume, level, t);
-			yield return null;
-		}
-	}
-	
+		
 	public static void DeactivateChildren(this Component co)
 	{
 		foreach(var c in co.transform.GetComponentsInChildren<Transform>().Except(new [] {co.transform}))
@@ -599,13 +582,6 @@ public static class Radical
 	{
 		var all = t.GetComponentsInChildren<Transform>(true);
 		return all.FirstOrDefault(c => c.name == name);
-	}
-
-	public static string GetId(this GameObject go)
-	{
-		var ui = go.GetComponent<UniqueIdentifier>();
-		return ui == null ? go.GetFullName() : ui.Id;
-
 	}
 	
 	public static GameObject FindGameObject(string name) 

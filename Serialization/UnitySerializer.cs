@@ -856,7 +856,7 @@ namespace Serialization
                             .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
                             .Where(
                                 p =>
-                                !typeof (Component).IsAssignableFrom(tp) || tp == typeof (Component) || !componentNames.ContainsKey(p.Name))
+                                !typeof (Component).IsAssignableFrom(tp) || tp == typeof (Component) || !ComponentNames.ContainsKey(p.Name))
                             .Where(
                                 p => p.PropertyType.GetCustomAttributes(typeof (DoNotSerialize), true).Count() == 0 &&
                                      p.GetGetMethod() != null &&
@@ -896,7 +896,7 @@ namespace Serialization
                             .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
                             .Where(
                                 p =>
-                                !typeof (Component).IsAssignableFrom(tp) || tp == typeof (Component) || !componentNames.ContainsKey(p.Name))
+                                !typeof (Component).IsAssignableFrom(tp) || tp == typeof (Component) || !ComponentNames.ContainsKey(p.Name))
                             .Where(
                                 p => !p.PropertyType.GetCustomAttributes(typeof (DoNotSerialize), true).Any() &&
                                      p.GetGetMethod() != null &&
@@ -1050,7 +1050,7 @@ namespace Serialization
                                                     ))
                                                 .Where(
                                                     p =>
-                                                    !typeof (Component).IsAssignableFrom(tp) || tp == typeof (Component) || !componentNames.ContainsKey(p.Name))
+                                                    !typeof (Component).IsAssignableFrom(tp) || tp == typeof (Component) || !ComponentNames.ContainsKey(p.Name))
                                                 .ToArray();
                 }
 
@@ -3076,15 +3076,27 @@ namespace Serialization
 
         private static readonly Dictionary<Type, WriteAValue> Writers = new Dictionary<Type, WriteAValue>();
         public static readonly Dictionary<Type, ReadAValue> Readers = new Dictionary<Type, ReadAValue>();
-        private static readonly Dictionary<string, bool> componentNames = new Dictionary<string, bool>();
+        private static Dictionary<string, bool> componentNames = new Dictionary<string, bool>();
+
+        private static Dictionary<string, bool> ComponentNames
+        {
+            get
+            {
+                if (componentNames == null)
+                {
+                    componentNames = typeof (Component).GetFields().Cast<MemberInfo>()
+                        .Concat(typeof (Component).GetProperties().Cast<MemberInfo>())
+                        .Select(m => m.Name)
+                        .ToDictionary(m => m, m => true);
+                }
+                return componentNames;
+            }
+        }
 
 
         static UnitySerializer()
         {
-            componentNames = typeof (Component).GetFields().Cast<MemberInfo>()
-                .Concat(typeof (Component).GetProperties().Cast<MemberInfo>())
-                .Select(m => m.Name)
-                .ToDictionary(m => m, m => true);
+            
 
 
             var index = (ushort) 60000;

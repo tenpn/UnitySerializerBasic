@@ -242,7 +242,18 @@ namespace Serialization
     {
 		public static Encoding TextEncoding = Encoding.Default;
 		
-        private static readonly string DataPath;
+        private static string dataPath;
+        private static string DataPath
+        {
+            get
+            {
+                if (dataPath == null)
+                {
+                    dataPath = Application.persistentDataPath;
+                }
+                return dataPath;
+            }
+        }
 
         internal static List<Action> FinalDeserialization = new List<Action>();
 
@@ -3096,7 +3107,6 @@ namespace Serialization
             }
 
 
-            DataPath = Application.persistentDataPath;
             RegisterSerializationAssembly();
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {

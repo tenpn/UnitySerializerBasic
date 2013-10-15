@@ -18,7 +18,7 @@ public class DontStoreObjectInRoom : MonoBehaviour, IControlSerializationEx
 	
 	void Awake()
 	{
-		LevelLoader.OnDestroyObject += HandleLevelLoaderOnDestroyObject;
+		UnitySerializerPackage.LevelLoader.OnDestroyObject += HandleLevelLoaderOnDestroyObject;
 	}
 
 	void HandleLevelLoaderOnDestroyObject (GameObject toBeDestroyed, ref bool cancel)
@@ -29,7 +29,7 @@ public class DontStoreObjectInRoom : MonoBehaviour, IControlSerializationEx
 	
 	void OnDestroy()
 	{
-		LevelLoader.OnDestroyObject -= HandleLevelLoaderOnDestroyObject;
+		UnitySerializerPackage.LevelLoader.OnDestroyObject -= HandleLevelLoaderOnDestroyObject;
 	}
 	
 	public bool ShouldSaveWholeObject ()

@@ -213,7 +213,7 @@ public static class LevelSerializer
 	/// <param name='onComplete'>
 	/// A method call to make when loading is complete
 	/// </param>
-	public static void LoadObjectTreeFromFile(string filename, Action<LevelLoader> onComplete = null)
+	public static void LoadObjectTreeFromFile(string filename, Action<UnitySerializerPackage.LevelLoader> onComplete = null)
 	{
 		var x= File.Open(Application.persistentDataPath + "/" + filename, FileMode.Open);
 		var data = new byte[x.Length];
@@ -311,7 +311,7 @@ public static class LevelSerializer
 	/// <param name='onComplete'>
 	/// A method to call when the load is complete
 	/// </param>
-	public static void LoadObjectTreeFromServer(string uri, Action<LevelLoader> onComplete = null)
+	public static void LoadObjectTreeFromServer(string uri, Action<UnitySerializerPackage.LevelLoader> onComplete = null)
 	{
 		onComplete = onComplete ?? delegate {};
 		RadicalRoutineHelper.Current.StartCoroutine(DownloadFromServer(uri, onComplete));
@@ -362,7 +362,7 @@ public static class LevelSerializer
 		RadicalRoutineHelper.Current.StartCoroutine(DownloadLevelFromServer(uri));
 	}
 	
-	static IEnumerator DownloadFromServer(string uri, Action<LevelLoader> onComplete)
+	static IEnumerator DownloadFromServer(string uri, Action<UnitySerializerPackage.LevelLoader> onComplete)
 	{
 		var www = new WWW(uri);
 		yield return www;
@@ -939,7 +939,7 @@ public static class LevelSerializer
 									                     layer = n.layer,
 									                     tag = n.tag,
 									                     setExtraData = true,
-                                                         Active = n.active,
+                                                         Active = n.activeInHierarchy,
                                                          Components =
                                                              n.GetComponents<Component>().Where(c=>c!=null).Select(
                                                                  c => c.GetType().FullName).Distinct()
@@ -1095,7 +1095,7 @@ public static class LevelSerializer
     /// </summary>
     /// <param name="data">The data for the tree to be loaded</param>
     /// <param name="onComplete">A function to call when the load is complete</param>
-    public static void LoadObjectTree(this byte[] data, Action<LevelLoader> onComplete = null)
+    public static void LoadObjectTree(this byte[] data, Action<UnitySerializerPackage.LevelLoader> onComplete = null)
     {
         onComplete = onComplete ?? delegate { };
         LoadNow(data, true, false, onComplete);
@@ -1116,7 +1116,7 @@ public static class LevelSerializer
 		LoadNow(data, dontDeleteExistingItems, showLoadingGUI, null);
 	}
 	
-	public static void LoadNow(object data, bool dontDeleteExistingItems, bool showLoadingGUI, Action<LevelLoader> complete)
+	public static void LoadNow(object data, bool dontDeleteExistingItems, bool showLoadingGUI, Action<UnitySerializerPackage.LevelLoader> complete)
 	{
 		byte[] levelData = null;
 		if(data is byte[])
@@ -1141,7 +1141,7 @@ public static class LevelSerializer
 		}
 		//Create a level loader
 		var l = new GameObject();
-		var loader = l.AddComponent<LevelLoader>();
+		var loader = l.AddComponent<UnitySerializerPackage.LevelLoader>();
 		loader.showGUI = showLoadingGUI;
 		var ld = UnitySerializer.Deserialize<LevelSerializer.LevelData> (levelData);
 		loader.Data = ld;
@@ -1150,7 +1150,7 @@ public static class LevelSerializer
 		loader.StartCoroutine(PerformLoad(loader, complete));
 	}
 	
-	static IEnumerator PerformLoad(LevelLoader loader, Action<LevelLoader> complete)
+	static IEnumerator PerformLoad(UnitySerializerPackage.LevelLoader loader, Action<UnitySerializerPackage.LevelLoader> complete)
 	{
 		yield return loader.StartCoroutine(loader.Load(0,Time.timeScale));
 		if(complete != null)
@@ -1162,7 +1162,7 @@ public static class LevelSerializer
     ///   Loads the saved level.
     /// </summary>
     /// <param name='data'> The data describing the level to load </param>
-    public static LevelLoader LoadSavedLevel(string data)
+    public static UnitySerializerPackage.LevelLoader LoadSavedLevel(string data)
     {
         LevelData ld;
         IsDeserializing = true;
@@ -1179,7 +1179,7 @@ public static class LevelSerializer
         SaveGameManager.Loaded();
         var go = new GameObject();
         Object.DontDestroyOnLoad(go);
-        var loader = go.AddComponent<LevelLoader>();
+        var loader = go.AddComponent<UnitySerializerPackage.LevelLoader>();
         loader.Data = ld;
 
         Application.LoadLevel(ld.Name);

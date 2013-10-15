@@ -5,6 +5,8 @@ using System.Linq;
 using Serialization;
 using UnityEngine;
 
+namespace UnitySerializerPackage
+{
 //Do not add this script to your own classes! This is created internally
 [AddComponentMenu("Storage/Internal/Level Loader (Internal use only, do not add this to your objects!)")]
 public class LevelLoader : MonoBehaviour
@@ -86,7 +88,7 @@ public class LevelLoader : MonoBehaviour
 
     private static void SetActive(GameObject go, bool activate)
     {
-        go.active = activate;
+        go.SetActive(activate);
         foreach (var c in go.transform.Cast<Transform>())
         {
             if (c.GetComponent<StoreInformation>() == null)
@@ -522,4 +524,5 @@ public class LevelLoader : MonoBehaviour
         
         }
     }
+}
 }

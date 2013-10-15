@@ -16,7 +16,7 @@ public class PreserveObjectWhenLoading : MonoBehaviour
 {
 	void Awake()
 	{
-		LevelLoader.OnDestroyObject += HandleLevelLoaderOnDestroyObject;
+		UnitySerializerPackage.LevelLoader.OnDestroyObject += HandleLevelLoaderOnDestroyObject;
 	}
 
 	void HandleLevelLoaderOnDestroyObject (GameObject toBeDestroyed, ref bool cancel)
@@ -27,7 +27,7 @@ public class PreserveObjectWhenLoading : MonoBehaviour
 	
 	void OnDestroy()
 	{
-		LevelLoader.OnDestroyObject -= HandleLevelLoaderOnDestroyObject;
+		UnitySerializerPackage.LevelLoader.OnDestroyObject -= HandleLevelLoaderOnDestroyObject;
 	}
 	
 	

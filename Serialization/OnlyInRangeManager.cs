@@ -208,7 +208,7 @@ public class OnlyInRangeManager : MonoBehaviour
 		yield return new WaitForEndOfFrame();
 		//Deserialize it
 		var complete = false;
-		LevelLoader loader = null;
+		UnitySerializerPackage.LevelLoader loader = null;
 		LevelSerializer.DontCollect();
 		LevelSerializer.LoadNow(d, true, false, (usedLevelLoader)=>{
 			complete = true;

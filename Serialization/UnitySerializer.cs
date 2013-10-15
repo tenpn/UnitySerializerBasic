@@ -15,26 +15,6 @@ using Object = UnityEngine.Object;
 
 #endregion
 
-public class Timing : IDisposable
-{
-    private readonly string _caption;
-    private readonly DateTime _start;
-
-    public Timing(string caption)
-    {
-        _caption = caption;
-        _start = DateTime.Now;
-    }
-
-    #region IDisposable Members
-
-    public void Dispose()
-    {
-        Radical.LogNow("{0} - {1:0.000}", _caption, (DateTime.Now - _start).TotalSeconds);
-    }
-
-    #endregion
-}
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class SerializeAll : Attribute

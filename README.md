@@ -3,7 +3,7 @@ UnitySerializerBasic 1.0
 
 A stripped-back version of UnitySerializer (http://whydoidoit.com/unityserializer/) for just serializing objects.
 
-Use when you want to take an arbitary object, and convert it to JSON, a string or binary blob. At a later poitn the object can be instantiated again. 
+Use when you want to take an arbitary object, and convert it to JSON, a string or binary blob. At a later point the object can be instantiated again. 
 
 Installation
 ============
